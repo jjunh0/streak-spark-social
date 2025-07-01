@@ -1,73 +1,89 @@
-# Welcome to your Lovable project
+# 배포 URL
+https://streak-spark-social.lovable.app/
 
-## Project info
+# 페르소나
 
-**URL**: https://lovable.dev/projects/4aed1110-73c8-4135-be7b-db6832a144b4
+### 페르소나 1: 김민준
+사용자 시나리오 및 스토리
+나태해지는 저녁, 스트릭과 배지를 사수해야 하는 대학원생
 
-## How can I edit this code?
+상황: 김민준은 저녁 늦게까지 이어진 연구에 지쳐 집으로 돌아왔습니다. 오늘 아침 '반드시 헬스장에 가겠다'고 다짐했지만, 피곤함에 소파에 누워 스마트폰만 보고 있습니다. 지금까지 겨우 쌓아온 '15일 연속 운동' 스트릭을 오늘 운동을 하지 않으면 잃게 되고, 곧 받을 수 있는 '30일 달성' 배지도 눈앞에 아른거려 이대로 운동을 건너뛸지 더욱 심각하게 고민하는 상황입니다.
 
-There are several ways of editing your application.
+사용자 시나리오:
 
-**Use Lovable**
+스마트폰에서 앱에 접속한다.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4aed1110-73c8-4135-be7b-db6832a144b4) and start prompting.
+오늘 운동을 하지 않으면 깨지게 될 자신의 연속 인증 스트릭(Streak)과 다음 배지 획득까지 남은 진행 상황을 확인하고 압박감을 느낀다.
 
-Changes made via Lovable will be committed automatically to this repo.
+참여 중인 '매일 헬스 인증' 챌린지 피드를 확인한다.
 
-**Use your preferred IDE**
+함께 챌린지에 참여 중인 다른 멤버들이 올린 '오운완' 인증 게시물을 여러 개 보게 된다.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+**스트릭과 배지를 잃고 싶지 않은 마음**과 다른 사람들에 대한 경쟁심이 더해져 결국 소파에서 일어나 운동 갈 채비를 한다.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+헬스장에서 운동을 마친 후, 자신의 '오운완' 사진을 찍어 인증하고 스트릭이 이어진 것을 확인하며 안도한다.
 
-Follow these steps:
+사용자 스토리:
+"시험과 논문을 준비하는 학생으로서, 나는 지금까지 내가 쌓아온 연속 인증 기록(스트릭)과 배지를 잃지 않으면서, 나와 비슷한 목표를 가진 다른 사람들의 실시간 진행 상황을 보고 싶다. 그래서 성취감과 경쟁심이라는 이중 자극을 통해 나태해지는 것을 막고 꾸준히 운동 루틴을 지킬 수 있다."
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+인수 조건:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Given: 사용자가 특정 챌린지(예: 헬스)에 참여하고 있고, 연속 인증 스트릭을 보유하고 있을 때
 
-# Step 3: Install the necessary dependencies.
-npm i
+When: 해당 챌린지의 피드에 접속했을 때
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+Then: 다른 멤버들이 올린 최신 인증 게시물 3개 이상과 함께, 사용자의 현재 연속 인증일(스트릭) 및 다음 배지 목표가 손실 회피를 자극하도록 눈에 잘 띄게 표시되어야 한다.
 
-**Edit a file directly in GitHub**
+### 페르소나 2: 이수진
+사용자 시나리오 및 스토리
+새로운 취미, 정보의 홍수 속에서 길을 잃은 직장인
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+상황: 이수진은 큰마음 먹고 테니스를 배우기로 결심했습니다. 인터넷 쇼핑몰에 접속해 테니스 라켓을 검색했지만, 수많은 브랜드와 광고성 후기 때문에 어떤 제품을 사야 할지 혼란스럽고 결정을 내리지 못하고 있습니다.
 
-**Use GitHub Codespaces**
+사용자 시나리오:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+'챌린저스' 앱에 접속하여 '테니스' 커뮤니티로 이동한다.
 
-## What technologies are used for this project?
+Q&A 게시판에 "30대 여성 입문자용 라켓 추천해주세요"라는 질문을 작성하여 올린다.
 
-This project is built with:
+몇 시간 후, 꾸준히 테니스 활동을 인증해 온 여러 사용자로부터 경험에 기반한 추천 댓글을 받는다.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+신뢰할 수 있는 정보를 바탕으로 라켓을 결정하고 구매한다.
 
-## How can I deploy this project?
+사용자 스토리:
+"새로운 취미를 시작하는 입문자로서, 나는 광고가 아닌 실제 활동을 인증한 숙련자들에게 직접 조언을 얻고 싶다. 그래서 시간과 비용을 낭비하지 않고 합리적인 첫 구매를 할 수 있다."
 
-Simply open [Lovable](https://lovable.dev/projects/4aed1110-73c8-4135-be7b-db6832a144b4) and click on Share -> Publish.
+인수 조건:
 
-## Can I connect a custom domain to my Lovable project?
+Given: 사용자가 특정 취미(예: 테니스) 커뮤니티의 Q&A 게시판에 접속했을 때
 
-Yes, you can!
+When: 장비 추천 등 질문을 게시했을 때
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Then: 해당 취미 카테고리에서 인증 활동 이력이 있는 사용자에게 우선적으로 질문이 노출되고, 24시간 내에 최소 1개 이상의 유의미한 답변을 받는다.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### 페르소나 3: 최유나
+사용자 시나리오 및 스토리
+오프라인 모임의 신뢰도를 높이고 싶은 모임장
+
+상황: 최유나가 운영하는 '주말 러닝 크루'에 새로운 가입 신청이 들어왔습니다. 이전 모임에서 약속 시간에 나타나지 않는 '유령 회원' 때문에 곤란했던 경험이 있어, 이번 신청자가 정말 꾸준히 활동할 사람인지 확인하고 싶습니다.
+
+사용자 시나리오:
+
+'챌린저스' 앱에서 자신의 크루에 들어온 신규 가입 신청 알림을 확인한다.
+
+신청자의 프로필을 클릭하여 확인한다.
+
+프로필에 기록된 지난 몇 주간의 '러닝' 활동 인증 내역을 살펴본다.
+
+꾸준한 활동 기록을 보고 신뢰할 수 있는 멤버라고 판단하여 가입을 승인한다.
+
+사용자 스토리:
+"오프라인 모임의 리더로서, 나는 모임 가입 신청자의 지난 활동 인증 기록을 확인하고 싶다. 그래서 활동에 대한 열정과 신뢰도를 미리 파악하여 유령 회원을 방지하고, 모임의 질을 높일 수 있다."
+
+인수 조건:
+
+Given: 모임장이 가입 신청자의 프로필에 접근했을 때
+
+When: 프로필 내 '활동 기록' 탭을 눌렀을 때
+
+Then: 신청자가 공개 설정한 과거 인증 게시물들이 최신순으로 명확하게 표시되어야 한다.
