@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import RoutineCard from "@/components/RoutineCard";
 import StreakCalendar from "@/components/StreakCalendar";
 import BadgeShowcase from "@/components/BadgeShowcase";
+import UserChallenges from "@/components/UserChallenges";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("feed");
@@ -139,6 +140,9 @@ const Index = () => {
                 <BadgeShowcase badges={userProfile.badges} />
               </CardContent>
             </Card>
+
+            {/* User Challenges - 새로 추가된 컴포넌트 */}
+            <UserChallenges />
 
             {/* Streak Calendar */}
             <Card>
