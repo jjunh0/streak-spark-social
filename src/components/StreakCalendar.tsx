@@ -1,8 +1,9 @@
-
-import { useState } from "react";
+import { useApp } from "@/contexts/AppContext";
 
 const StreakCalendar = () => {
-  // Mock data for the last 7 weeks
+  const { state } = useApp();
+  
+  // 실제 스트릭 데이터를 사용하여 캘린더 생성
   const generateCalendarData = () => {
     const data = [];
     const today = new Date();
@@ -12,16 +13,17 @@ const StreakCalendar = () => {
       for (let day = 0; day < 7; day++) {
         const date = new Date(today);
         date.setDate(today.getDate() - (week * 7) + day - today.getDay());
+        const dateString = date.toISOString().split('T')[0];
         
-        // Mock streak data - random completion
-        const isCompleted = Math.random() > 0.3; // 70% completion rate
+        const isCompleted = state.streakData[dateString] || false;
         const isFuture = date > today;
+        const isToday = date.toDateString() === today.toDateString();
         
         weekData.push({
           date: date.getDate(),
-          isCompleted: isCompleted && !isFuture,
+          isCompleted,
           isFuture,
-          isToday: date.toDateString() === today.toDateString()
+          isToday
         });
       }
       data.push(weekData);
@@ -33,31 +35,31 @@ const StreakCalendar = () => {
   const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       {/* Week days header */}
-      <div className="grid grid-cols-7 gap-1 text-xs text-center text-muted-foreground mb-2">
+      <div className="grid grid-cols-7 gap-2 text-xs text-center text-slate-500 font-medium mb-3">
         {weekDays.map((day) => (
-          <div key={day} className="p-1">{day}</div>
+          <div key={day} className="p-2">{day}</div>
         ))}
       </div>
       
       {/* Calendar grid */}
-      <div className="space-y-1">
+      <div className="space-y-2">
         {calendarData.map((week, weekIndex) => (
-          <div key={weekIndex} className="grid grid-cols-7 gap-1">
+          <div key={weekIndex} className="grid grid-cols-7 gap-2">
             {week.map((day, dayIndex) => (
               <div
                 key={dayIndex}
                 className={`
-                  w-6 h-6 rounded-sm flex items-center justify-center text-xs font-medium
+                  w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold
+                  transition-all duration-300 hover:scale-110 cursor-pointer
                   ${day.isFuture 
-                    ? 'bg-gray-100 text-gray-300' 
+                    ? 'bg-slate-100 text-slate-300' 
                     : day.isCompleted 
-                      ? 'bg-gradient-to-r from-purple-400 to-blue-400 text-white' 
-                      : 'bg-gray-200 text-gray-600'
+                      ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg' 
+                      : 'bg-slate-200 text-slate-500 hover:bg-slate-300'
                   }
-                  ${day.isToday ? 'ring-2 ring-purple-400 ring-offset-1' : ''}
-                  transition-all duration-200 hover:scale-110
+                  ${day.isToday ? 'ring-2 ring-indigo-400 ring-offset-2 shadow-lg' : ''}
                 `}
                 title={day.isFuture ? '미래' : day.isCompleted ? '인증 완료' : '인증 없음'}
               >
@@ -68,7 +70,7 @@ const StreakCalendar = () => {
         ))}
       </div>
       
-      <div className="text-xs text-center text-muted-foreground mt-3">
+      <div className="text-xs text-center text-slate-500 font-medium mt-4 pt-4 border-t border-slate-100">
         지난 7주간의 인증 기록
       </div>
     </div>
