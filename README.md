@@ -1,5 +1,5 @@
 # 배포 URL
-https://streak-spark-social.lovable.app/
+https://streak-spark-social.vercel.app/
 
 # 페르소나
 
