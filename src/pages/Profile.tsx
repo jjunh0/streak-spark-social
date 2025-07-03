@@ -76,10 +76,10 @@ const Profile = () => {
                   </Button>
                 </div>
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {/* Stats Grid - 가로 스크롤/가로 배치로 개선 */}
+                <div className="flex gap-4 overflow-x-auto py-2 scrollbar-hide">
                   {stats.map((stat) => (
-                    <div key={stat.label} className="text-center p-4 bg-gradient-to-br from-white to-slate-50 rounded-xl border border-slate-200/50">
+                    <div key={stat.label} className="min-w-[120px] text-center p-4 bg-gradient-to-br from-white to-slate-50 rounded-xl border border-slate-200/50 flex-shrink-0">
                       <div className={`text-2xl font-bold ${stat.color} mb-1`}>
                         {stat.icon} {stat.value}
                       </div>

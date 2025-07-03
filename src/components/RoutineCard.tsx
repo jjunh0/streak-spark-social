@@ -1,4 +1,4 @@
-import { Heart, MessageCircle, Share } from "lucide-react";
+import { Heart, MessageCircle, Share, ThumbsUp } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,9 +23,12 @@ interface RoutineCardProps {
 }
 
 const RoutineCard = ({ routine }: RoutineCardProps) => {
-  const { dispatch } = useApp();
+  const { state, dispatch } = useApp();
 
-  const handleLike = () => {
+  const likes = routine.likes || 0;
+  const isLiked = routine.isLiked;
+
+  const handleThumbsUp = () => {
     dispatch({ 
       type: 'TOGGLE_LIKE', 
       payload: { routineId: routine.id, userId: '1' } 
@@ -79,15 +82,15 @@ const RoutineCard = ({ routine }: RoutineCardProps) => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={handleLike}
+              onClick={handleThumbsUp}
               className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-200 ${
-                routine.isLiked 
-                  ? 'text-red-500 hover:text-red-600 bg-red-50 hover:bg-red-100' 
-                  : 'text-slate-500 hover:text-red-500 hover:bg-slate-50'
+                isLiked 
+                  ? 'text-blue-500 hover:text-blue-600 bg-blue-50 hover:bg-blue-100' 
+                  : 'text-slate-500 hover:text-blue-500 hover:bg-slate-50'
               }`}
             >
-              <Heart className={`w-5 h-5 ${routine.isLiked ? 'fill-current' : ''}`} />
-              <span className="font-medium">{routine.likes}</span>
+              <ThumbsUp className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
+              <span className="font-medium">{likes}</span>
             </Button>
             
             <Button 
@@ -107,6 +110,12 @@ const RoutineCard = ({ routine }: RoutineCardProps) => {
               <Share className="w-5 h-5" />
             </Button>
           </div>
+          {/* 일정 수 이상 동의 시 인증 성공, 미만이면 인증 시도중 표시 */}
+          {likes >= 3 ? (
+            <span className="ml-4 px-3 py-1 rounded-full bg-gradient-to-r from-green-400 to-emerald-500 text-white text-xs font-bold shadow">인증 성공 🎉</span>
+          ) : (
+            <span className="ml-4 px-3 py-1 rounded-full bg-gradient-to-r from-slate-300 to-slate-400 text-white text-xs font-bold shadow">인증 시도중...</span>
+          )}
         </div>
       </div>
     </div>

@@ -64,7 +64,10 @@ const NewChallengeModal = ({ isOpen, onClose }: NewChallengeModalProps) => {
             <X className="w-5 h-5" />
           </Button>
         </CardHeader>
-        
+        <div className="px-6 pb-2 text-xs text-slate-500">
+          누구나 챌린지를 만들 수 있습니다. <br />
+          챌린지를 개설하면 다른 사람도 참여할 수 있어요!
+        </div>
         <CardContent className="space-y-6">
           {/* 챌린지 이름 */}
           <div className="space-y-3">
