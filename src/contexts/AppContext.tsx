@@ -8,6 +8,8 @@ interface User {
   streak: number;
   totalDays: number;
   badges: string[];
+  followers: string[]; // 팔로워: 나를 팔로우하는 유저 id 목록
+  following: string[]; // 팔로잉: 내가 팔로우하는 유저 id 목록
 }
 
 interface Routine {
@@ -82,7 +84,9 @@ const initialState: AppState = {
     avatar: '/placeholder.svg',
     streak: 12,
     totalDays: 45,
-    badges: ['연속 10일', '첫 인증', '주말 챔피언']
+    badges: ['연속 10일', '첫 인증', '주말 챔피언'],
+    followers: ['2', '3'], // 예시
+    following: ['2'], // 예시
   },
   routines: [
     {
@@ -152,6 +156,28 @@ const initialState: AppState = {
       category: '명상',
       startDate: '2024년 6월',
       isActive: true
+    },
+    {
+      id: 4,
+      name: '플랭크 1분',
+      streak: 0,
+      totalDays: 0,
+      badges: [],
+      recentPosts: 2,
+      category: '운동',
+      startDate: '2024년 6월',
+      isActive: true
+    },
+    {
+      id: 5,
+      name: '영어 단어 암기',
+      streak: 0,
+      totalDays: 0,
+      badges: [],
+      recentPosts: 1,
+      category: '학습',
+      startDate: '2024년 6월',
+      isActive: true
     }
   ],
   streakData: {},
@@ -164,7 +190,9 @@ const initialState: AppState = {
         avatar: '/placeholder.svg',
         streak: 5,
         totalDays: 20,
-        badges: []
+        badges: [],
+        followers: [],
+        following: []
       },
       content: '안녕하세요! 오늘도 모두 화이팅입니다! ☀️',
       createdAt: '2024-06-01T09:00:00',
@@ -177,10 +205,148 @@ const initialState: AppState = {
             avatar: '/placeholder.svg',
             streak: 2,
             totalDays: 10,
-            badges: []
+            badges: [],
+            followers: [],
+            following: []
           },
           content: '응원합니다! 💪',
           createdAt: '2024-06-01T10:00:00'
+        }
+      ],
+      challengeId: 1
+    },
+    // 아침 러닝 챌린지 Q&A
+    {
+      id: 2,
+      user: {
+        id: '4',
+        name: '러닝초보',
+        avatar: '/placeholder.svg',
+        streak: 3,
+        totalDays: 7,
+        badges: [],
+        followers: [],
+        following: []
+      },
+      content: '아침 러닝할 때 준비운동은 꼭 해야 하나요?',
+      createdAt: '2024-06-02T08:00:00',
+      comments: [
+        {
+          id: 2,
+          user: {
+            id: '10',
+            name: '러닝숙련자',
+            avatar: '/placeholder.svg',
+            streak: 120,
+            totalDays: 200,
+            badges: ['연속 100일', '러닝 마스터'],
+            followers: ['1', '2'],
+            following: ['1'],
+          },
+          content: '네! 준비운동은 부상 방지에 꼭 필요해요. 5~10분 정도 가볍게 스트레칭을 추천합니다.',
+          createdAt: '2024-06-02T09:00:00'
+        }
+      ],
+      challengeId: 1
+    },
+    // 독서 1시간 챌린지 Q&A
+    {
+      id: 3,
+      user: {
+        id: '5',
+        name: '책초보',
+        avatar: '/placeholder.svg',
+        streak: 1,
+        totalDays: 1,
+        badges: [],
+        followers: [],
+        following: []
+      },
+      content: '책을 오래 집중해서 읽는 팁이 있을까요?',
+      createdAt: '2024-06-03T10:00:00',
+      comments: [
+        {
+          id: 3,
+          user: {
+            id: '11',
+            name: '독서숙련자',
+            avatar: '/placeholder.svg',
+            streak: 90,
+            totalDays: 150,
+            badges: ['연속 50일', '독서왕'],
+            followers: ['1'],
+            following: ['2'],
+          },
+          content: '30분 단위로 쉬면서 읽으면 집중력이 오래갑니다. 메모하면서 읽는 것도 추천해요!',
+          createdAt: '2024-06-03T11:00:00'
+        }
+      ],
+      challengeId: 2
+    },
+    // 명상 20분 챌린지 Q&A
+    {
+      id: 4,
+      user: {
+        id: '6',
+        name: '명상입문',
+        avatar: '/placeholder.svg',
+        streak: 2,
+        totalDays: 2,
+        badges: [],
+        followers: [],
+        following: []
+      },
+      content: '명상할 때 잡생각이 너무 많아요. 어떻게 해야 하나요?',
+      createdAt: '2024-06-04T07:00:00',
+      comments: [
+        {
+          id: 4,
+          user: {
+            id: '12',
+            name: '명상숙련자',
+            avatar: '/placeholder.svg',
+            streak: 80,
+            totalDays: 120,
+            badges: ['명상 마스터'],
+            followers: [],
+            following: [],
+          },
+          content: '자연스럽게 생각이 떠오르는 걸 인정하고, 호흡에 집중해보세요. 점점 나아집니다!',
+          createdAt: '2024-06-04T08:00:00'
+        }
+      ],
+      challengeId: 3
+    },
+    // 러닝화 추천 Q&A
+    {
+      id: 5,
+      user: {
+        id: '7',
+        name: '러닝질문러',
+        avatar: '/placeholder.svg',
+        streak: 2,
+        totalDays: 3,
+        badges: [],
+        followers: [],
+        following: []
+      },
+      content: '러닝화 추천해 주세요!',
+      createdAt: '2024-06-05T07:30:00',
+      comments: [
+        {
+          id: 5,
+          user: {
+            id: '10',
+            name: '러닝숙련자',
+            avatar: '/placeholder.svg',
+            streak: 120,
+            totalDays: 200,
+            badges: ['연속 100일', '러닝 마스터'],
+            followers: ['1', '2'],
+            following: ['1'],
+          },
+          content: '러닝화는 본인 발에 맞는 걸 신는 게 제일 좋아요! 나이키, 아식스, 뉴발란스 등 인기 브랜드에서 선택해 보세요.',
+          createdAt: '2024-06-05T08:00:00'
         }
       ],
       challengeId: 1

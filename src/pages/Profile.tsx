@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Settings, Activity, Trophy, Calendar, Edit, Camera } from "lucide-react";
+import { User, Settings, Activity, Trophy, Calendar, Edit, Camera, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,19 +9,36 @@ import RoutineCard from "@/components/RoutineCard";
 import StreakCalendar from "@/components/StreakCalendar";
 import BadgeShowcase from "@/components/BadgeShowcase";
 import { useApp } from "@/contexts/AppContext";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useParams, useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { state } = useApp();
+  const { userId } = useParams<{ userId?: string }>();
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
+
+  // 모든 유저 목록
+  const allUsers = [state.user, ...state.communityPosts.map(post => post.user)];
+  const getUserById = (id: string) => allUsers.find(u => u.id === id);
+  // userId가 있으면 해당 유저, 없으면 내 프로필
+  const profileUser = userId ? getUserById(userId) : state.user;
+  if (!profileUser) return <div className="text-center py-20 text-slate-400">존재하지 않는 유저입니다.</div>;
+
+  // 팔로워/팔로잉 정보
+  const followers = profileUser.followers.map(getUserById).filter(Boolean);
+  const following = profileUser.following.map(getUserById).filter(Boolean);
 
   // 사용자의 루틴만 필터링
-  const userRoutines = state.routines.filter(routine => routine.user.name === state.user.name);
+  const userRoutines = state.routines.filter(routine => routine.user.name === profileUser.name);
 
   // 통계 데이터
   const stats = [
-    { label: "현재 스트릭", value: state.user.streak, icon: "🔥", color: "text-orange-600" },
-    { label: "총 인증일", value: state.user.totalDays, icon: "📅", color: "text-blue-600" },
-    { label: "획득 뱃지", value: state.user.badges.length, icon: "🏆", color: "text-purple-600" },
+    { label: "현재 스트릭", value: profileUser.streak, icon: "🔥", color: "text-orange-600" },
+    { label: "총 인증일", value: profileUser.totalDays, icon: "📅", color: "text-blue-600" },
+    { label: "획득 뱃지", value: profileUser.badges.length, icon: "🏆", color: "text-purple-600" },
     { label: "총 포스트", value: userRoutines.length, icon: "📝", color: "text-green-600" }
   ];
 
@@ -40,14 +57,14 @@ const Profile = () => {
       <div className="max-w-5xl mx-auto px-4 py-8">
         {/* Profile Header */}
         <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm mb-8">
-          <CardContent className="p-8">
+          <CardContent className="pt-8 pb-8">
             <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
               {/* Avatar Section */}
               <div className="relative">
                 <Avatar className="w-32 h-32 ring-8 ring-indigo-100">
-                  <AvatarImage src={state.user.avatar} />
+                  <AvatarImage src={profileUser.avatar} />
                   <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-4xl font-bold">
-                    {state.user.name[0]}
+                    {profileUser.name[0]}
                   </AvatarFallback>
                 </Avatar>
                 <Button 
@@ -63,8 +80,28 @@ const Profile = () => {
               <div className="flex-1 text-center md:text-left">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                   <div>
-                    <h1 className="text-3xl font-bold text-slate-800 mb-2">{state.user.name}</h1>
-                    <p className="text-slate-600 mb-4">루틴을 통해 더 나은 나를 만들어가고 있어요</p>
+                    <h1 className="text-3xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+                      {profileUser.name}
+                      {profileUser.streak >= 60 && (
+                        <span className="inline-block"><Badge className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs">숙련자</Badge></span>
+                      )}
+                    </h1>
+                    <p className="text-slate-600 mb-4">
+                      루틴을 통해 더 나은 나를 만들어가고 있어요<br />
+                      {profileUser.streak >= 60 && (
+                        <span className="text-indigo-600 font-semibold">🔥 {profileUser.streak}일 연속 인증! 오랜 기간 꾸준히 실천한 숙련자입니다.</span>
+                      )}
+                    </p>
+                    {/* 팔로워/팔로잉 */}
+                    <div className="flex gap-4 justify-center md:justify-start mb-2">
+                      <button className="text-sm text-indigo-600 hover:underline font-semibold" onClick={() => setShowFollowers(true)}>
+                        팔로워 {followers.length}
+                      </button>
+                      <span className="text-slate-400">|</span>
+                      <button className="text-sm text-indigo-600 hover:underline font-semibold" onClick={() => setShowFollowing(true)}>
+                        팔로잉 {following.length}
+                      </button>
+                    </div>
                   </div>
                   <Button 
                     variant="outline" 
@@ -75,7 +112,6 @@ const Profile = () => {
                     {isEditing ? "저장" : "편집"}
                   </Button>
                 </div>
-
                 {/* Stats Grid - 가로 스크롤/가로 배치로 개선 */}
                 <div className="flex gap-4 overflow-x-auto py-2 scrollbar-hide">
                   {stats.map((stat) => (
@@ -83,7 +119,6 @@ const Profile = () => {
                       <div className={`text-2xl font-bold ${stat.color} mb-1`}>
                         {stat.icon} {stat.value}
                       </div>
-                      <p className="text-sm text-slate-600">{stat.label}</p>
                     </div>
                   ))}
                 </div>
@@ -91,6 +126,46 @@ const Profile = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* 팔로워/팔로잉 모달 */}
+        <Dialog open={showFollowers} onOpenChange={setShowFollowers}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>팔로워</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-2">
+              {followers.length === 0 && <div className="text-slate-400 text-center">팔로워가 없습니다.</div>}
+              {followers.map((user: any) => (
+                <button key={user.id} className="flex items-center gap-3 w-full p-2 rounded hover:bg-slate-100" onClick={() => { setShowFollowers(false); navigate(`/profile/${user.id}`); }}>
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src={user.avatar} />
+                    <AvatarFallback>{user.name[0]}</AvatarFallback>
+                  </Avatar>
+                  <span className="font-medium text-slate-700">{user.name}</span>
+                </button>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
+        <Dialog open={showFollowing} onOpenChange={setShowFollowing}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>팔로잉</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-2">
+              {following.length === 0 && <div className="text-slate-400 text-center">팔로잉이 없습니다.</div>}
+              {following.map((user: any) => (
+                <button key={user.id} className="flex items-center gap-3 w-full p-2 rounded hover:bg-slate-100" onClick={() => { setShowFollowing(false); navigate(`/profile/${user.id}`); }}>
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src={user.avatar} />
+                    <AvatarFallback>{user.name[0]}</AvatarFallback>
+                  </Avatar>
+                  <span className="font-medium text-slate-700">{user.name}</span>
+                </button>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
 
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4 bg-slate-100 p-1 rounded-xl">
@@ -204,7 +279,7 @@ const Profile = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <BadgeShowcase badges={state.user.badges} />
+                <BadgeShowcase badges={profileUser.badges} />
               </CardContent>
             </Card>
           </TabsContent>
